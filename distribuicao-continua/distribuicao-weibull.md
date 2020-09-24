@@ -1,88 +1,99 @@
----
-title: 'Distribuição Weibull W[$\alpha, \beta$]'
-output: html_document
----
+Distribuição Weibull W\[\(\alpha, \beta\)\]
+================
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+### Seja X uma variável aleatória contínua, X tem uma distribuição weibull com forma (shape) \(\alpha > 0\) e escala (scale) \(\beta > 0\) se sua função densidade probabilidade (f.d.p) for definida como:
 
-### Seja X uma variável aleatória contínua, X tem uma distribuição weibull com forma (shape) $\alpha > 0$ e escala (scale) $\beta > 0$ se sua função densidade probabilidade (f.d.p) for definida como:
+\[ f(x, \alpha, \beta) =  \frac{\alpha}{\beta}\left(\frac{x}{\beta}\right)^{\alpha - 1}\exp\left[-\frac{\alpha}{\beta}\right]^\alpha, x > 0 \]
 
-$$ f(x, \alpha, \beta) =  \frac{\alpha}{\beta}\left(\frac{x}{\beta}\right)^{\alpha - 1}\exp\left[-\frac{\alpha}{\beta}\right]^\alpha, x > 0 $$
+## Exemplos com X \~ W\[2, 1\] \(\alpha = 2, \beta = 1\) (default)
 
-## Exemplos com X ~ W[2, 1] $\alpha = 2, \beta = 1$ (default)
+### Cálculo da função densidade de probabilidade no quantil x = 1, com \(\alpha\) (shape) = 2 e \(\beta\) (scale) = 1
 
-### Cálculo da função densidade de probabilidade no quantil x = 1, com $\alpha$ (shape) = 2 e $\beta$ (scale) = 1
+\[ f(x, \alpha, \beta) = f(1, 2, 1) = ?\]
 
-$$ f(x, \alpha, \beta) = f(1, 2, 1) = ?$$
-
-```{r}
+``` r
 quantil = 1
 shape = 2
 ```
 
-```{r}
+``` r
 cat('f(1, 2, 1) = ', dweibull(quantil, shape))
 ```
 
-### Cálculo da probabilidade (f.d.a) $P(X \leq 1)$ = ? (área sob a curva até o valor 1)
+    ## f(1, 2, 1) =  0.7357589
 
-```{r}
+### Cálculo da probabilidade (f.d.a) \(P(X \leq 1)\) = ? (área sob a curva até o valor 1)
+
+``` r
 x = seq(0, 6, by = 0.1)
 plot(x, dweibull(x, shape), type = 'l', ylab = 'dweibull', lwd = 2, main = expression(paste('P(X', phantom()<= 1, ')')))
 polygon(x = c(0, seq(0, quantil, by = 0.05), quantil), y = c(0, dweibull(seq(0, quantil, by = 0.05), shape), 0), col = 'SlateBlue1')
 legend("topright", legend = c(expression(paste(alpha, ' = 2, ', beta, ' = 1'))), lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-```{r}
+![](distribuicao-weibull_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
 cat('P(X <= 1) = ', pweibull(quantil, shape))
 ```
 
-### Cálculo da probabilidade (f.d.a) $P(X \geq 1)$ = ? (área sob a curva a partir do valor 1)
+    ## P(X <= 1) =  0.6321206
 
-```{r}
+### Cálculo da probabilidade (f.d.a) \(P(X \geq 1)\) = ? (área sob a curva a partir do valor 1)
+
+``` r
 plot(x, dweibull(x, shape), type = 'l', ylab = 'dweibull', lwd = 2, main = expression(paste('P(X', phantom()>= 1, ')')))
 polygon(x = c(quantil, seq(quantil, 6, by = 0.05), 6), y = c(0, dweibull(seq(quantil, 6, by = 0.05), shape), 0), col = 'SlateBlue1')
 legend("topright", legend = c(expression(paste(alpha, ' = 2, ', beta, ' = 1'))), lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-```{r}
+![](distribuicao-weibull_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
 cat('P(X >= 1) = ', pweibull(quantil, shape, lower.tail = FALSE))
 ```
 
-### Cálculo da probabilidade $P(0.5 \leq X \leq 2)$ = ?
+    ## P(X >= 1) =  0.3678794
 
-```{r}
+### Cálculo da probabilidade \(P(0.5 \leq X \leq 2)\) = ?
+
+``` r
 plot(x, dweibull(x, shape), type = 'l', ylab = 'dweibull', lwd = 2, main = expression(paste('P(', 0.5 <= X,
                        phantom()<= 2, ')')))
 polygon(x = c(0.5, seq(0.5, 2, by = 0.05), 2), y = c(0, dweibull(seq(0.5, 2, by = 0.05), shape), 0), col = 'SlateBlue1')
 legend("topright", legend = c(expression(paste(alpha, ' = 2, ', beta, ' = 1'))), lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
+![](distribuicao-weibull_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
 ### Cálculo do quantil (x) correspondente a dada probabilidade p = 95%
-$$P(X <= x) = 0.95 \\
-     x = ?$$
-```{r}
+
+\[P(X <= x) = 0.95 \\
+     x = ?\]
+
+``` r
 cat('P(X <= x) = 0.95\n', 'x = ', qweibull(0.95, shape))
 ```
 
+    ## P(X <= x) = 0.95
+    ##  x =  1.730818
+
 ### Gera amostra de tamanho 100 da distribuicao de weibull
 
-```{r}
+``` r
 x = rweibull(100, shape)
 ```
 
-```{r include=FALSE}
-y = hist(x)
-lim.y = c(0, max(y$density) + max(y$density)/4)
-lim.x = c(min(y$breaks) - 0.5, max(y$breaks) + 0.5)
-```
-
-```{r}
+``` r
 hist(x, probability = TRUE, main = "Histograma com curva teórica W[2, 1]", col = "SlateBlue1", xlim = lim.x, ylim = lim.y) 
 curve(dweibull(x, 2), add=T, lwd = 2.5)
+```
 
+![](distribuicao-weibull_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
 hist(x, freq = F, main = "Gráfico de densidade estimada", col = "SlateBlue1", xlim = lim.x, ylim = lim.y)
 lines(density(x), lwd = 2.5)
 ```
+
+![](distribuicao-weibull_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
