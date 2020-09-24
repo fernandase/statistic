@@ -1,6 +1,6 @@
 ---
 title: 'Distribuição Exponencial $Exp[\lambda]$'
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
