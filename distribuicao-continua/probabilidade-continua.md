@@ -3,6 +3,8 @@ Modelos Probabilísticos Contínuos
 
 # Distribuições de probabilidade
 
+<img src="https://www.r-project.org/logo/Rlogo.svg" style="float:left; margin:10px 20px" width="120" height="120"/>
+
 ## O R possui quatro funções para cada distribuição de probabilidade:
 
   - Função de densidade (f.d.p): prefixo **d** +

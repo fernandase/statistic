@@ -1,0 +1,674 @@
+---
+title: "Exercícios no R de Distribuição de Probabilidade Contínua"
+author: 'Fernanda Eustáquio'
+date: "2020"
+output:
+  html_document:
+    toc: yes 
+    toc_float:   
+      collapsed: yes
+    number_sections: yes
+    highlight: tango
+    theme: yeti #cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex e yeti.
+references:
+- id: estatisticaplicada
+  title: Estatística aplicada (inferência)
+  author: 
+  - family: Rebula
+    given: Uanderson
+  URL: 'https://www.academia.edu/37027227/Livro_pdf_Estat%C3%ADstica_aplicada_infer%C3%AAncia_Prof_MSc_Uanderson_Rebula'
+  page: 1-102
+  type: book
+  issued:
+    year: 2018
+nocite: "@*"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<img src="https://www.r-project.org/logo/Rlogo.png" style="float:left; margin:10px 20px" width="120" height="100"/>
+
+<!--Text comment
+
+pdf_document: 
+    toc: true # yes para html adicionando um sumario com os indices
+    number_sections: yes
+geometry: margin=1in    
+fontsize: 12pt
+linestretch: 1.15 
+documentclass: article #report and book
+link-citations: yes
+
+\newpage
+
+```{r echo=FALSE, out.height='120px', out.width='120px', fig.align='left'}
+knitr::include_graphics('Rlogo.png')
+```
+-->
+
+Exercícios resolvidos com a linguagem R retirados do [PortalAction](http://www.portalaction.com.br/) e do livro [Estatística Aplicada (inferência)](https://www.academia.edu/37027227/Livro_pdf_Estat%C3%ADstica_aplicada_infer%C3%AAncia_Prof_MSc_Uanderson_Rebula) @estatisticaplicada  do professor Prof. MSc Uanderson Rébula. 
+
+A descrição de cada distribuição, incluindo suas funções densidade de probabilidade (f.d.p), função densidade acumulada (f.d.a), quantil correspondente a dada probabilidade e o gerador aleatório de uma amostra da distribuição estão delhados em https://github.com/fernandase/statistic/tree/master/distribuicao-continua .
+
+# Distribuição Uniforme
+
+## [Exemplo 6.1.1 no Portal Action](http://www.portalaction.com.br/probabilidades/61-distribuicao-uniforme)
+
+> "A ocorrência de panes em qualquer ponto de uma rede telefônica de 7 km foi modelada por uma distribuição Uniforme no intervalo [0, 7]."  
+
+a) Qual é a probabilidade de que uma pane venha a ocorrer nos primeiros 800 metros?
+
+$P(X \leq 0.8) =$
+
+```{r}
+punif(800/1000, max = 7)
+```
+
+b) Qual a probabilidade de que ocorra nos 3 km centrais da rede?
+
+$P(2 \leq X \leq 5) =$ 
+
+```{r}
+punif(5, max = 7) - punif(2, max = 7)
+```
+
+## @estatisticaplicada - Exemplo 1, página 39.
+
+> "Com base em históricos, o tempo de vôo de Chicago - Nova York pode ter qualquer valor no intervalo de 120 a 140 minutos. Considerando que cada um dos intervalos de 1 minuto é igualmente provável, determine:" 
+
+a) A probabilidade do avião chegar entre 126 e 131 minutos.
+
+$P(126 \leq X \leq 131) =$
+
+```{r}
+punif(131, min = 120, max = 140) - punif(126, min = 120, max = 140)
+```
+
+b) A probabilidade do avião chegar em 136 minutos ou mais.
+
+$P(X \geq 136) =$
+
+```{r}
+punif(136, min = 120, max = 140, lower.tail = FALSE)
+```
+
+ou
+
+$1 - P(X \leq 136) =$
+
+```{r}
+1 - punif(136, min = 120, max = 140)
+```
+
+# Distribuição Normal
+
+## [Exemplo 6.2.2 no Portal Action](http://www.portalaction.com.br/probabilidades/62-distribuicao-normal)
+
+> "Determine a área sob a curva de uma normal padronizada para Z entre -0,20 e 1,93." 
+
+$P(-0.20 \leq Z \leq 1.93) =$
+
+```{r}
+pnorm(1.93) - pnorm(-0.2)
+```
+
+## [Exemplo 6.2.3 no Portal Action](http://www.portalaction.com.br/probabilidades/62-distribuicao-normal)
+
+> "Suponha que a espessura média de arruelas produzidas em uma fábrica tenha distribuição normal com média 11,15 mm e desvio padrão 2,238 mm. **Qual a porcentagem de arruelas que tem espessura entre 8,70 mm e 14,70 mm?**"
+
+### Solução 01: 
+- No R é possível fazer o cálculo da probabilidade direto, sem ter que transformar a variável X em Z. Neste caso,
+
+$P(8.70 \leq X \leq 14.70) = ?$ 
+
+```{r}
+pnorm(14.70, mean = 11.15, sd = 2.238) - pnorm(8.70, mean = 11.15, sd = 2.238) 
+```
+
+### Solução 02:
+
+$P(8.70 \leq X \leq 14.70) = ?$ 
+$$z = \frac{8.70 - 11.15}{2.238} = `r (8.70 - 11.15)/2.238`$$
+$$z = \frac{14.70 - 11.15}{2.238} = `r (14.70 - 11.15)/2.238`$$
+$P(`r (8.70 - 11.15)/2.238` \leq Z \leq `r (14.70 - 11.15)/2.238`) =$
+
+```{r}
+pnorm((14.70 - 11.15)/2.238) - pnorm((8.70 - 11.15)/2.238)
+```
+
+**Resposta: A porcentagem de arruelas com espessura entre 8,70 e 14,70 é de `r round(100 * (pnorm((14.70 - 11.15)/2.238) - pnorm((8.70 - 11.15)/2.238)), 2)` %.**
+
++ No portal, os valores de -z e z foram arredondados para -z = 1.09 e z = 1.58. Desta forma:
+
+$P(-1.09 \leq Z \leq 1.58) =$
+```{r}
+pnorm(1.58) - pnorm(-1.09)
+```
+
+**Resposta: A porcentagem de arruelas com espessura entre 8,70 e 14,70 é de, `r round(100 * (pnorm(1.58) - pnorm(-1.09)), 2)` %.**
+
+## Exemplo
+
+> "O tempo gasto no exame vestibular de uma universidade tem distribuição Normal, com média 120 min e desvio padrão 15 min."
+
+a) Sorteando-se um aluno ao acaso, qual é a probabilidade dele terminar o exame antes de 100 minutos?
+
+### Solução 01:
+
+$P(X \leq 100) =$
+
+```{r}
+pnorm(100, mean = 120, sd = 15)
+```
+
+### Solução 02:
+
+$P(X \leq 100) = P(Z \leq \frac{x - 120}{15}) = P(Z \leq z)$
+
+$z = \frac{100 - 120}{15} = `r (100 - 120)/15`$
+
+$P(Z \leq `r (100 - 120)/15`) =$
+
+```{r}
+pnorm((100 - 120)/15)
+```
+
+**Resposta: A probabilidade do aluno terminar o exame antes de 100 minutos é de `r round(100 * pnorm((100 - 120)/15), 2)`%**
+
+b) Qual deve ser o tempo de prova de modo a permitir que 95% dos vestibulandos terminem no prazo estipulado?
+
+### Solução 01:
+
+$P(X \leq x) = 0.95$
+
+```{r}
+qnorm(0.95, mean = 120, sd = 15)
+```
+
+**Resposta: O tempo de prova deve ser de `r round(qnorm(0.95, mean = 120, sd = 15), 4)` minutos.**
+
+### Solução 02:
+
+$P(X \leq x) = P(Z \leq \frac{x - 120}{15}) = P(Z \leq z) = 0.95$
+
+$z =$
+
+```{r}
+qnorm(0.95)
+```
+
+$z = `r qnorm(0.95)` = \frac{x - 120}{15}$
+
+$x = `r qnorm(0.95) * 15 + 120`$
+
+```{r}
+cat('O tempo de prova deve ser de', round(qnorm(0.95) * 15 + 120, 4), 'minutos.')
+```
+
+c) Qual é o intervalo central (simétrico) de tempo, tal que 80% dos estudantes gastam para completar o exame?
+
+### Solução 01:
+
+$P(x_1 \leq X \leq x_2) = 0.8$, considerando $x_1 = x_2$ 
+
+$P(X \leq x) - [1 - P(X \leq x)] = 0.8$
+
+$2P(X \leq x) = 1.80$
+
+$P(X \leq x) = `r 1.8/2`$
+
+$x = x_2 =$
+
+```{r}
+qnorm(1.8/2, mean = 120, sd = 15)
+```
+
+$P(X \leq `r qnorm(1.8/2, mean = 120, sd = 15)`) = `r 1.8/2`$ 
+
+$P(x_1 \leq X \leq `r qnorm(1.8/2, mean = 120, sd = 15)`) = 0.8$
+
+$P(X \leq `r qnorm(1.8/2, mean = 120, sd = 15)`) - P(X \leq x_1) = 0.8$
+
+$2P(X \leq x_1) = P(X \leq `r qnorm(1.8/2, mean = 120, sd = 15)`) - 0.8$
+
+$P(X \leq x_1) = `r 1.8/2 - 0.8`$
+
+$x_1 =$
+
+```{r}
+qnorm(0.1, mean = 120, sd = 15)
+```
+
+**Resposta: O intervalo de tempo será de [`r round(qnorm(0.1, mean = 120, sd = 15), 4)`, `r round(qnorm(1.8/2, mean = 120, sd = 15), 4)`] minutos.**
+
+### Solução 02:
+
+$P(x_1 \leq X \leq x_2) = P\left(\frac{x_1 - 120}{15} \leq Z \leq \frac{x_2 - 120}{15}\right) = 0.8$
+
+$P(-z \leq Z \leq z) = 0.8$
+
+$P(Z \leq z) - [1 - P(Z \leq z)] = 0.8$
+
+$P(Z \leq z) = `r 1.8/2`$
+
+$z = +-$
+
+```{r}
+qnorm(0.9)
+```
+
+$-z = `r -qnorm(0.9)` = \frac{x_1 - 120}{15}$
+
+$x_1 = `r -qnorm(0.9) * 15 + 120`$
+
+$z = `r qnorm(1.8/2)` = \frac{x_2 - 120}{15}$
+
+$x_2 = `r qnorm(0.9) * 15 + 120`$
+
+```{r}
+cat('O intervalo de tempo será de [', -qnorm(0.9) * 15 + 120, ', ', 
+    qnorm(0.9) * 15 + 120, '] minutos.', sep = '')
+```
+
+### Solução 03:
+
+$\frac{0.8}{2} = `r 0.8/2`$ (para cada lado a partir da $\mu = 0$)
+
+$P(0 \leq Z \leq x) = `r 0.8/2`$
+
+$P(Z \leq z) - P(Z \leq 0) = `r 0.8/2`$
+
+$P(Z \leq z) = P(Z \leq 0) + `r 0.8/2`$
+
+$P(Z \leq z) =$
+
+```{r}
+pnorm(0) + 0.4
+```
+
+$P(Z \leq z) = `r pnorm(0) + 0.8/2`$
+
+$z = +-$
+
+```{r}
+qnorm(pnorm(0) + 0.4)
+```
+
+$-z = `r -qnorm(pnorm(0) + 0.4)` = \frac{x_1 - 120}{15}$
+
+$x_1 = `r -qnorm(pnorm(0) + 0.4) * 15 + 120`$
+
+$z = `r qnorm(pnorm(0) + 0.4)` = \frac{x_2 - 120}{15}$
+
+$x_2 = `r qnorm(pnorm(0) + 0.8/2) * 15 + 120`$
+
+```{r}
+cat('O intervalo de tempo será de [', -qnorm(pnorm(0) + 0.4) * 15 + 120, ', ', 
+    qnorm(pnorm(0) + 0.4) * 15 + + 120, '] horas.', sep = '')
+```
+
+## @estatisticaplicada - Exemplo 9, página 45.
+
+> "Seja X o tempo de vida útil das lâmpadas produzidas pela PHILIPS. Sabe-se que a média de vida útil das lâmpadas é de 1000 horas com desvio padrão de 100 horas, ou seja, X ~ N[1000, 100]. O fabricante deseja fixar prazo de garantia, em horas, de tal modo que, se a duração da lâmpada for inferior à garantia, a lâmpada seja trocada." 
+
+a) De quantas horas deve ser este prazo para que somente 4% das lâmpadas sejam trocadas?
+
+### Solução 01:
+
+$P(X \leq x) = 0.04$
+
+$x =$
+
+```{r}
+qnorm(0.04, mean = 1000, sd = 100)
+```
+
+**Resposta: O prazo deve ser de `r round(qnorm(0.04, mean = 1000, sd = 100))` horas.**
+
+### Solução 02:
+
+$P(X \leq x) = P(Z \leq \frac{x - 1000}{100}) = P(Z \leq z) = 0.04$
+
+$z =$
+
+```{r}
+qnorm(0.04)
+```
+
+$z = `r qnorm(0.04)` = \frac{x - 1000}{100}$
+
+$x = `r 1000 + qnorm(0.04) * 100`$
+
+```{r}
+cat('O prazo deve ser de ', round(1000 + qnorm(0.04) * 100), ' horas.', sep = '')
+```
+
+b) Dentro de que limite, de ambos os lados da média, ficará 95% das lâmpadas? @estatisticaplicada - Exemplo 11, página 46. 
+
+### Solução 01:
+
+$P(x_1 \leq X \leq x_2) = 0.95$, considerando $x_1 = x_2$ 
+
+$P(X \leq x) - [1 - P(X \leq x)] = 0.95$
+
+$2P(X \leq x) = `r 1 + 0.95`$
+
+$P(X \leq x) = `r (1 + 0.95)/2`$
+
+$x = x_2 =$
+
+```{r}
+qnorm(0.975, mean = 1000, sd = 100)
+```
+
+$P(X \leq `r qnorm(1.95/2, mean = 1000, sd = 100)`) = `r 1.95/2`$ 
+
+$P(x_1 \leq X \leq `r qnorm(1.95/2, mean = 1000, sd = 100)`) = 0.95$
+
+$P(X \leq `r qnorm(1.95/2, mean = 1000, sd = 100)`) - P(X \leq x_1) = 0.95$
+
+$2P(X \leq x_1) = P(X \leq `r qnorm(1.95/2, mean = 1000, sd = 100)`) - 0.95$
+
+$P(X \leq x_1) = `r 1.95/2 - 0.95`$
+
+$x_1 =$
+
+```{r}
+qnorm(0.025, mean = 1000, sd = 100)
+```
+
+**Resposta: O intervalo de tempo será de [`r round(qnorm(0.025, mean = 1000, sd = 100))`, `r round(qnorm(0.975, mean = 1000, sd = 100))`] horas.**
+
+### Solução 02:
+
+$\frac{0.95}{2} = `r 0.95/2`$ (para cada lado a partir da $\mu = 0$)
+
+$P(0 \leq Z \leq z) = `r 0.95/2`$
+
+$P(Z \leq z) - P(Z \leq 0) = `r 0.95/2`$
+
+$P(Z \leq z) = P(Z \leq 0) + `r 0.95/2`$
+
+$P(Z \leq z) =$
+
+```{r}
+pnorm(0) + 0.475
+```
+
+$z = +-$
+
+```{r}
+qnorm(pnorm(0) + 0.475)
+```
+
+$-z = `r -qnorm(pnorm(0) + 0.475)` = \frac{x_1 - 1000}{100}$
+
+$x_1 = `r 1000 - qnorm(pnorm(0) + 0.475) * 100`$
+
+$z = `r qnorm(pnorm(0) + 0.475)` = \frac{x_2 - 1000}{100}$
+
+$x_2 = `r 1000 + qnorm(pnorm(0) + 0.475) * 100`$
+
+```{r}
+cat('O intervalo de tempo será de [', round(1000 - qnorm(pnorm(0) + 0.475) * 100), ', ', 
+    round(1000 + qnorm(pnorm(0) + 0.475) * 100), '] horas.', sep = '')
+```
+
+### Solução 03:
+
+$P(x_1 \leq X \leq x_2) = P\left(\frac{x_1 - 1000}{100} \leq Z \leq \frac{x_2 - 1000}{100}\right) = 0.95$
+
+$P(-z \leq Z \leq z) = 0.95$
+
+$P(Z \leq z) - [1 - P(Z \leq z)] = 0.95$
+
+$P(Z \leq z) = `r (1 + 0.95)/2`$
+
+$z = +-$
+
+```{r}
+qnorm(0.975)
+```
+
+$-z = `r -qnorm(1.95/2)` = \frac{x - 1000}{100}$
+
+$x_1 = `r -qnorm(1.95/2) * 100 + 1000`$
+
+$z = `r qnorm(1.95/2)` = \frac{x - 1000}{100}$
+
+$x_2 = `r qnorm(1.95/2) * 100 + 1000`$
+
+```{r}
+cat('O intervalo de tempo será de [', round(-qnorm(0.975) * 100 + 1000), ', ', 
+    round(qnorm(0.975) * 100 + 1000), '] horas.', sep = '')
+```
+
+## @estatisticaplicada - Exemplo 10, página 46.
+
+> "As pontuações para um teste de Engenheiro em uma empresa são normalmente distribuídas, com uma média de 7,5 com e um desvio padrão de 0,5. Para ser adequado ao emprego, você deve ter pontuação dentro dos 9% primeiros. **Qual é a menor pontuação que você pode conseguir e ainda ser adequado ao emprego?**"
+
+### Solução 01:
+
+$P(X \geq x) = 0.09$
+
+$x =$
+
+```{r}
+qnorm(0.09, mean = 7.5, sd = 0.5, lower.tail = FALSE)
+```
+
+**Resposta: A menor pontuação deve ser de `r round(qnorm(0.09, mean = 7.5, sd = 0.5, lower.tail = FALSE), 2)`.**
+
+### Solução 02:
+
+$P(X \geq x) = P(Z \geq \frac{x - 7.5}{0.5}) = P(Z \geq z) = 0.09$
+
+$z =$
+
+```{r}
+qnorm(0.09, lower.tail = FALSE)
+```
+
+$z = `r qnorm(0.09, lower.tail = FALSE)` = \frac{x - 7.5}{0.5}$
+
+$x = `r 7.5 + qnorm(0.09, lower.tail = FALSE) * 0.5`$
+
+```{r}
+cat('A menor pontuação deve ser de ', 7.5 + 
+      round(qnorm(0.09, lower.tail = FALSE) * 0.5,2), '.', sep = '')
+```
+
+ou
+
+$P(Z \geq z) = 1 - P(Z \leq z) = 0.09$
+
+$P(Z \leq z) = 1 - 0.09 = `r 1 - 0.09`$
+
+$z =$
+
+```{r}
+qnorm(0.91)
+```
+
+$z = `r qnorm(0.91)` = \frac{x - 7.5}{0.5}$
+
+$x = `r 7.5 + qnorm(0.91) * 0.5`$
+
+```{r}
+cat('A menor pontuação deve ser de ', round(7.5 + qnorm(0.91) * 0.5,2), 
+    '.', sep = '')
+```
+
+# Distribuição Qui-quadrado
+
+## [Exemplo 6.3.2 no Portal Action](http://www.portalaction.com.br/probabilidades/63-distribuicao-qui-quadrado)
+
+> "X segue uma distribuição qui-quadrado com 17 graus de liberdade e queremos encontrar $x_1$ e $x_2$ tais que" 
+
+$P(x_1 \leq X \leq x_2) = P(X \leq x_2) - P(X \leq x_1) = 0.95$
+
+**Probabilidade acumulada até $x_1$:**
+
+$P(X \leq x_1) = \frac{1 - 0.95}{2} = `r (1 - 0.95)/2`$
+
+$x_1 =$
+
+```{r}
+qchisq(0.025, 17)
+```
+
+**Probabilidade acumulada até $x_2$:**
+
+$P(X \leq x_2) = \frac{1 + 0.95}{2} = `r (1 + 0.95)/2`$
+
+$x_2 =$
+
+```{r}
+qchisq(0.975, 17)
+```
+
+# Distribuição t de Student
+
+## @estatisticaplicada - Exemplo, página 67.
+
+> "Um analista deseja estimar a média do tempo de vida útil das lâmpadas produzidas. Coletou uma amostra de 20 lâmpadas e verificou que a média de vida útil é de 1000 horas, com desvio padrão de 100 horas. **Construa um Intervalo de Confiança (IC) de 90% para a média populacional.**"  
+
+$\bar{x} = 1000, \sigma = 100, \mu = ?$
+
+n = 20 (tamanho da amostra)
+
+Graus de liberdade = n - 1 = 19
+
+$IC = \bar{x} +- t \times \frac{\sigma}{\sqrt n}$
+
+$P(X \leq t) = 0.05$
+
+$t = +-$
+
+```{r}
+qt(0.05, 19, lower.tail = FALSE)
+```
+
+$P(x_1 \leq X \leq x_2) = 0.9$
+
+$x_1 =?$
+
+```{r}
+1000 - qt(0.05, 19, lower.tail = FALSE) * 100/sqrt(20)
+```
+
+$x_2 =?$
+
+```{r}
+1000 + qt(0.05, 19, lower.tail = FALSE) * 100/sqrt(20)
+```
+
+**Resposta: Com 90% de confiança, a média do tempo de vida útil das lâmpadas está em [`r round(1000 - qt(0.05, 19, lower.tail = FALSE) * 100/sqrt(20), 4)`, `r round(1000 + qt(0.05, 19, lower.tail = FALSE) * 100/sqrt(20), 4)`].**
+
+# Distribuição Exponencial
+
+## [Exemplo 6.12.1 no Portal Action](http://www.portalaction.com.br/probabilidades/612-distribuicao-exponencial)
+
+> "O tempo até a falha do ventilador de motores a diesel tem uma distribuição Exponencial com parâmetro $\lambda = \frac{1}{28700}$ horas. **Qual a probabilidade de um destes ventiladores falhar nas primeiras 24000 horas de funcionamento?**" 
+  
+$P(0 \leq X \leq 24000) = P(X \leq 24000) - P(X \leq 0) =$
+    
+```{r}
+pexp(24000, 1/28700) - pexp(0, 1/28700)
+```
+  
+**Resposta: A probabilidade de falha nas primeiras 24000 horas é de `r round(100 * (pexp(24000, 1/28700) - pexp(0, 1/28700)), 2)`%.**
+    
+## @estatisticaplicada - Exemplo 1, página 52.
+
+> "O tempo médio que as pessoas acessam um caixa eletrônico de um banco é de 25 minutos. Qual a probabilidade de que o próximo acesso a este caixa."  
+    
+a) Seja superior a 40 minutos
+  
+$P(X \geq 40) =$
+    
+```{r}
+pexp(40, 1/25, lower.tail = FALSE)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * pexp(40, 1/25, lower.tail = FALSE), 2)`%.**
+    
+b) Seja superior a 90 minutos
+  
+$P(X \geq 90) =$
+    
+```{r}
+pexp(90, 1/25, lower.tail = FALSE)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * pexp(90, 1/25, lower.tail = FALSE), 2)`%.**
+    
+c) Seja inferior a 10 minutos
+  
+$P(X \leq 10) =$
+    
+```{r}
+pexp(10, 1/25)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * pexp(10, 1/25), 2)`%.**
+
+## @estatisticaplicada - Exemplo 2, página 53.
+
+> "O tempo médio entre ocorrências de acidentes na rodovia Barra Mansa - Angra é de 10 dias. Se um acidente acabou de acontecer, qual a probabilidade de que o próximo ocorra em um período:" 
+    
+a) Inferior a 15 dias
+  
+$P(X \leq 15) =$
+    
+```{r}
+pexp(15, 1/10)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * pexp(15, 1/10), 2)`%.**
+    
+b) Entre 20 e 25 dias
+  
+$P(20 \leq X \leq 25) = P(X \leq 25) - P(X \leq 20) =$
+    
+```{r}
+pexp(25, 1/10) - pexp(20, 1/10)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * (pexp(25, 1/10) - pexp(20, 1/10)), 2)`%.**
+
+# Distribuição de Weibull
+
+##  @estatisticaplicada - Exemplo 1, página 54.
+
+> "O rolamento de um motor segue uma variável aleatória de Weibull, com vida útil de 200 horas e fator de qualidade de 0,8. Determine a probabilidade de o rolamento:"
+
+$\alpha (shape) = 0.8, \beta (scale) = 200$
+  
+a) Durar 300 horas ou mais
+  
+$P(X \geq 300) =$
+    
+```{r}
+pweibull(300, 0.8, 200, lower.tail = FALSE)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * pweibull(300, 0.8, 200, lower.tail = FALSE), 2)`%.**
+    
+b) Durar 70 horas ou menos
+  
+$P(X \leq 70) =$
+    
+```{r}
+pweibull(70, 0.8, 200)
+```
+  
+**Resposta: A probabilidade é de `r round(100 * pweibull(70, 0.8, 200), 2)`%.**
+
+\newpage
+
+# Referências
+        

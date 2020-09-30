@@ -41,9 +41,13 @@ cat('P(X <= 1) = ', pnorm(quantil))
 #### ggplot
 
 ``` r
-ggplot(data.frame(x = seq(-3, 3, by = 0.05)), aes(x = x)) +
-  geom_polygon(data = data.frame(x.p = c(-3, seq(-3, quantil, by = 0.05), quantil),
-                                 y.p = c(0, dnorm(seq(-3, quantil, by = 0.05)), 0)), 
+x.values = data.frame(x = seq(-3, 3, by = 0.05))
+```
+
+``` r
+ggplot(data = x.values, aes(x = x)) +
+  geom_polygon(data = data.frame(x.p = c(min(x.values), seq(min(x.values), quantil, by = 0.05), quantil),
+                                 y.p = c(0, dnorm(seq(min(x.values), quantil, by = 0.05)), 0)), 
                aes(x = x.p, y = y.p), 
                fill = 'SlateBlue1') +
   geom_line(aes(y = dnorm(x), color = 'black'), size = 1.3) +
@@ -55,7 +59,7 @@ ggplot(data.frame(x = seq(-3, 3, by = 0.05)), aes(x = x)) +
         plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ### Cálculo da probabilidade \(P(X \geq 1)\) = ? (área sob a curva a partir do valor 1)
 
@@ -66,7 +70,7 @@ legend("topleft", legend = c(expression(paste(italic(mu) == 0, ', ', italic(sigm
       lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 cat('P(X >= 1) = ', pnorm(quantil, lower.tail = FALSE))
@@ -77,9 +81,9 @@ cat('P(X >= 1) = ', pnorm(quantil, lower.tail = FALSE))
 #### ggplot
 
 ``` r
-ggplot(data.frame(x = seq(-3, 3, by = 0.05)), aes(x = x)) +
-  geom_polygon(data = data.frame(x.p = c(quantil, seq(1, 3, by = 0.05), 3),
-                                 y.p = c(0, dnorm(seq(quantil, 3, by = 0.05)), 0)), 
+ggplot(data = x.values, aes(x = x)) +
+  geom_polygon(data = data.frame(x.p = c(quantil, seq(quantil, max(x.values), by = 0.05), max(x.values)),
+                                 y.p = c(0, dnorm(seq(quantil, max(x.values), by = 0.05)), 0)), 
                aes(x = x.p, y = y.p), 
                fill = 'SlateBlue1') +
   geom_line(aes(y = dnorm(x), color = 'black'), size = 1.3) +
@@ -91,7 +95,7 @@ ggplot(data.frame(x = seq(-3, 3, by = 0.05)), aes(x = x)) +
         plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### Cálculo da probabilidade \(P(-1 \leq X \leq 1)\) = ?
 
@@ -103,7 +107,7 @@ legend("topleft", legend = c(expression(paste(italic(mu) == 0, ', ', italic(sigm
       lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 cat('P(-1 <= X <= 1) = ', punif(1) - punif(-1))
@@ -114,7 +118,7 @@ cat('P(-1 <= X <= 1) = ', punif(1) - punif(-1))
 #### ggplot
 
 ``` r
-ggplot(data.frame(x = seq(-3, 3, by = 0.05)), aes(x = x)) +
+ggplot(data = x.values, aes(x = x)) +
   geom_polygon(data = data.frame(x.p = c(-quantil, seq(-quantil, quantil, by = 0.05), quantil),
                           y.p = c(0, dnorm(seq(-quantil, quantil, by = 0.05)), 0)), 
                           aes(x = x.p, y = y.p), 
@@ -128,7 +132,7 @@ ggplot(data.frame(x = seq(-3, 3, by = 0.05)), aes(x = x)) +
         plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ### Cálculo do quantil x correspondente a dada probabilidade p = 95%
 
@@ -153,36 +157,40 @@ hist(x, probability = TRUE, main = "Histograma com curva teórica N[0, 1]", col 
 curve(dnorm(x), add=T, lwd = 2.5)
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 hist(x, freq = F, main = "Gráfico de densidade estimada", col = "SlateBlue1", xlim = lim.x, ylim = lim.y)
 lines(density(x), lwd = 2.5)
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-16-2.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
 
 #### ggplot
 
 ``` r
 x = as.data.frame(x)
 ggplot(x, aes(x = x, y = after_stat(density))) +
-  geom_histogram(fill = 'SlateBlue1', color = 'black', binwidth = 0.4) +
-  geom_line(aes(y = dnorm(x)), size = 1) +
+  geom_histogram(fill = 'SlateBlue1', color = 'black', breaks = y$breaks) +
+  geom_line(aes(y = dnorm(x)), size = 1.5) +
   labs(title = "Histograma com curva teórica N[0, 1]") +
   theme_classic() +
+  scale_x_continuous(limits = lim.x) +
+  scale_y_continuous(limits = lim.y) +
   theme(plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ``` r
 ggplot(x, aes(x = x, y = after_stat(density))) +
-  geom_histogram(fill = 'SlateBlue1', color = 'black', binwidth = 0.4) +
-  geom_density(size = 1) +
+  geom_histogram(fill = 'SlateBlue1', color = 'black', breaks = y$breaks) +
+  geom_density(size = 1.5) +
   labs(title = "Gráfico de densidade estimada") +
   theme_classic() +
+  scale_x_continuous(limits = lim.x) +
+  scale_y_continuous(limits = lim.y) +
   theme(plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-![](distribuicao-normal_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
+![](distribuicao-normal_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->

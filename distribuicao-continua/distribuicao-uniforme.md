@@ -30,13 +30,36 @@ legend("topleft", legend = c('min = 0, max = 1'),
       lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 cat('P(X <= 0.5) = ', punif(quantil))
 ```
 
     ## P(X <= 0.5) =  0.5
+
+#### ggplot
+
+``` r
+x.values = data.frame(x = seq(-2, 2, by = 0.05))
+```
+
+``` r
+ggplot(data = x.values, aes(x = x)) +
+  geom_polygon(data = data.frame(x.p = c(min(x.values), seq(min(x.values), quantil, by = 0.05), quantil),
+                                 y.p = c(0, dunif(seq(min(x.values), quantil, by = 0.05)), 0)), 
+               aes(x = x.p, y = y.p), 
+               fill = 'SlateBlue1') +
+  geom_line(aes(y = dunif(x), color = 'black'), size = 1.3) +
+  labs(title = expression(paste('P(X', phantom()<= 0.5, ')')), y = 'dunif') +
+  scale_color_manual(name = NULL, values=c('black'),
+                     labels = c('min = 0, max = 1')) +
+  theme_classic() +
+  theme(legend.position = 'top', legend.text = element_text(size = 12), 
+        plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
+```
+
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ### Cálculo da probabilidade \(P(X \geq 0.5)\) = ? (área sob a reta a partir do valor 0.5)
 
@@ -47,13 +70,32 @@ legend("topleft", legend = c('min = 0, max = 1'),
       lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 cat('P(X >= 0.5) = ', punif(quantil, lower.tail = FALSE))
 ```
 
     ## P(X >= 0.5) =  0.5
+
+#### ggplot
+
+``` r
+ggplot(data = x.values, aes(x = x)) +
+  geom_polygon(data = data.frame(x.p = c(quantil, seq(quantil, max(x.values), by = 0.05), 1),
+                                 y.p = c(0, dunif(seq(quantil, max(x.values), by = 0.05)), 0)), 
+               aes(x = x.p, y = y.p), 
+               fill = 'SlateBlue1') +
+  geom_line(aes(y = dunif(x), color = 'black'), size = 1.3) +
+  labs(title = expression(paste('P(X', phantom()>= 0.5, ')')), y = 'dunif') +
+  scale_color_manual(name = NULL, values=c('black'),
+                     labels = c('min = 0, max = 1')) +
+  theme_classic() +
+  theme(legend.position = 'top', legend.text = element_text(size = 12), 
+        plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
+```
+
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### Cálculo da probabilidade \(P(0.25 \leq X \leq 0.75)\) = ?
 
@@ -65,13 +107,33 @@ legend("topleft", legend = c('min = 0, max = 1'),
       lty=1, col=c('black'), lwd=2, bty="n")
 ```
 
-![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 cat('P(0.25 <= X <= 0.75) = ', punif(0.75) - punif(0.25))
 ```
 
     ## P(0.25 <= X <= 0.75) =  0.5
+
+#### ggplot
+
+``` r
+ggplot(data = x.values, aes(x = x)) +
+  geom_polygon(data = data.frame(x.p = c(0.25, seq(0.25, 0.75, by = 0.05), 0.75),
+                                 y.p = c(0, dunif(seq(0.25, 0.75, by = 0.05)), 0)), 
+               aes(x = x.p, y = y.p), 
+               fill = 'SlateBlue1') +
+  geom_line(aes(y = dunif(x), color = 'black'), size = 1.3) +
+  labs(title = expression(paste('P(', 0.25 <= X,
+                       phantom()<= 0.75, ')')), y = 'dunif') +
+  scale_color_manual(name = NULL, values=c('black'),
+                     labels = c('min = 0, max = 1')) +
+  theme_classic() +
+  theme(legend.position = 'top', legend.text = element_text(size = 12), 
+        plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
+```
+
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ### Cálculo do quantil (x) correspondente a dada probabilidade p = 95%
 
@@ -95,19 +157,40 @@ hist(x, probability = TRUE, main = "Histograma com curva teórica U[0, 1]", col 
 curve(dunif(x), add=T, lwd = 2.5) 
 ```
 
-![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 hist(x, freq = F, main = "Gráfico de densidade estimada", col = "SlateBlue1", xlim = lim.x, ylim = lim.y)
 lines(density(x), lwd = 2.5)
 ```
 
-![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
 
-### Gráfico de distribuição de probabilidade uniforme X \~ U\[5, 20\] entre 0 e 50
+#### ggplot
 
 ``` r
-plot(function(x) dunif(x, 5, 20), 0, 50, ylab = 'dunif')
+x = as.data.frame(x)
+ggplot(x, aes(x = x, y = after_stat(density))) +
+  geom_histogram(fill = 'SlateBlue1', color = 'black', breaks = y$breaks) +
+  geom_line(aes(y = dunif(x)), size = 1.5) +
+  labs(title = "Histograma com curva teórica U[0, 1]") +
+  theme_classic() +
+  scale_x_continuous(limits = lim.x) +
+  scale_y_continuous(limits = lim.y) +
+  theme(plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+``` r
+ggplot(x, aes(x = x, y = after_stat(density))) +
+  geom_histogram(fill = 'SlateBlue1', color = 'black', breaks = y$breaks) +
+  geom_density(size = 1.5) +
+  labs(title = "Gráfico de densidade estimada") +
+  theme_classic() +
+  scale_x_continuous(limits = lim.x) +
+  scale_y_continuous(limits = lim.y) +
+  theme(plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
+```
+
+![](distribuicao-uniforme_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->
