@@ -1,6 +1,6 @@
-<img src="https://www.r-project.org/logo/Rlogo.svg" style="float:left; margin:10px 20px" width="120" height="120"/>
+<img src="https://www.r-project.org/logo/Rlogo.svg" style="float:left; margin:10px 20px; display:inline-block" width="120" height="120"/>
 
-<img src="https://d33wubrfki0l68.cloudfront.net/0ab849ed51b0b866ef6895c253d3899f4926d397/85aff/wp-content/uploads/2014/04/ggplot2.png" style="float:left; margin:10px 20px" width="120" height="120"/>
+<img src="https://d33wubrfki0l68.cloudfront.net/0ab849ed51b0b866ef6895c253d3899f4926d397/85aff/wp-content/uploads/2014/04/ggplot2.png" style="float:left; margin:10px 20px display:inline-block" width="110" height="120"/>
 
 Repositório de aplicação estátistica inferencial em R com modelos
 probabilísticos discretos e contínuos. Para cada tipo de modelo
