@@ -34,7 +34,7 @@ probabilístico (discreto, contínuo) tem-se:
     e do livro [Estatística Aplicada
     (inferência)](https://www.academia.edu/37027227/Livro_pdf_Estat%C3%ADstica_aplicada_infer%C3%AAncia_Prof_MSc_Uanderson_Rebula).
 
-<img src="https://d33wubrfki0l68.cloudfront.net/d99b4c92f610627d61009f09c5db0f7f806fbec3/648bb/wp-content/uploads/2014/04/rmarkdown.png" style="float:left; margin:10px 20px" width="120" height="120"/>
+<img src="https://d33wubrfki0l68.cloudfront.net/d99b4c92f610627d61009f09c5db0f7f806fbec3/648bb/wp-content/uploads/2014/04/rmarkdown.png" style="float:left; margin:10px 20px" width="110" height="120"/>
 
 Todos os arquivos foram gerados no R Markdown.
 
