@@ -15,8 +15,9 @@ probabilístico (discreto, contínuo) tem-se:
     **ggplot2**;
 
 -   Um arquivo **Markdown** de cada distribuição de probabilidade
-    denominado **distribuicao- +\[nome\_da\_distribuição\]** com o uso
-    das quatro funções de distribuição do R:
+    denominado **distribuicao- +\[nome\_da\_distribuição\]** com o
+    histograma com a curva teórica de cada distribuição, gráfico de
+    densidade estimada e o uso das quatro funções de distribuição do R:
 
     -   Função densidade de probabilidade (f.d.p) \[contínua\] ou função
         probabilidade \[discreta\]: prefixo **d +
