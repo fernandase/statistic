@@ -3,7 +3,7 @@ Distribuição Exponencial \(Exp[\lambda]\)
 
 ### Seja X uma variável aleatória contínua, X tem uma distribuição exponencial com \(\lambda > 0\) se sua função densidade probabilidade (f.d.p) for definida como:
 
-\[ f(x, \lambda) =  \lambda\exp^{-\lambda x}, x \geq 0 \]
+\[ f(x, \lambda) =  \lambda\exp[-\lambda x], x \geq 0 \]
 
 ## Exemplos com X \~ \(Exp[\lambda = 1]\) (default)
 
@@ -181,7 +181,7 @@ ggplot(x, aes(x = x, y = after_stat(density))) +
   theme(plot.title = element_text(hjust = 0.5, size = 15, face = 'bold'))
 ```
 
-    ## Warning: Removed 3 row(s) containing missing values (geom_path).
+    ## Warning: Removed 9 row(s) containing missing values (geom_path).
 
 ![](distribuicao-exponencial_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 

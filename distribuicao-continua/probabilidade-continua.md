@@ -174,7 +174,7 @@ ggplot(data.frame(x = seq(0, 6, by = 0.05)), aes(x = x)) +
 # Distribuição Weibull W\[\(\alpha, \beta\)\]
 
 ``` r
-par(mfrow = c(1, 2), mai=c(0.45,0.45,0.55,0.25))
+par(mfrow = c(1, 2))
 
 x = seq(0, 6, by = 0.05)
 plot(x, dweibull(x, 2, 3), type = 'l', main = expression(paste('X ~ W[', alpha, ',', beta, ']')), ylab = 'dweibull', lwd = 2, ylim = c(0, 1))
